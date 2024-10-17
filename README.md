@@ -1,15 +1,12 @@
 ## RWA (Real World Assets) with Chainlink and Tesla Stocks
 
-### Patrick Collins youtube video:
-https://www.youtube.com/watch?v=KNUchSEtQV0
-> 55:00
+### Documentation:
 
-Documentation:
-
-Chainlink documents used:
-Functions: https://docs.chain.link/chainlink-functions/getting-started
-Price Feeds: https://docs.chain.link/data-feeds/price-feeds/addresses?network=ethereum&page=1
-Chateau: https://chateau.voyage/
+Chainlink documentation used during this project:
+* Functions: https://docs.chain.link/chainlink-functions/getting-started
+* Price Feeds: https://docs.chain.link/data-feeds/price-feeds/addresses?network=ethereum&page=1
+* Chateau: https://chateau.voyage/
+* Patrick Collins tutorial: https://www.youtube.com/watch?v=KNUchSEtQV0
 
 ### Contracts required
 ```shell
