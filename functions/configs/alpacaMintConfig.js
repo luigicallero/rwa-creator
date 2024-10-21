@@ -1,5 +1,6 @@
 const fs = require("fs")
 const {Location, ReturnType, CodeLanguage} = require("@chainlink/functions-toolkit")
+require("@chainlink/env-enc").config();
 
 const requestConfig = {
     source: fs.readFileSync("./functions/sources/alpacaBalance.js").toString(),

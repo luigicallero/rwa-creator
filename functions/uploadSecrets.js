@@ -1,8 +1,8 @@
 const {
     SecretsManager,
 } = require("@chainlink/functions-toolkit")
+require("@chainlink/env-enc").config();
 const ethers = require("ethers")
-
 
 const uploadSecrets = async () => {
     // hardcoded for Sepolia

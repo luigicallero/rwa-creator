@@ -1,9 +1,10 @@
 {
   "scripts": {
-    "simulate": "node -r dotenv/config ./functions/simulators/alpacaMintSimulator.js",
+    "simulate": "node ./functions/simulators/alpacaMintSimulator.js",
     "uploadSecrets": "node -r dotenv/config ./functions/uploadSecrets.js"
   },
   "dependencies": {
+    "@chainlink/env-enc": "^1.0.5",
     "@chainlink/functions-toolkit": "^0.3.2",
     "dotenv": "^16.4.5"
   }
