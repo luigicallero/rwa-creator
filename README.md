@@ -1,4 +1,7 @@
 ## RWA (Real World Assets) with Chainlink and Tesla Stocks
+Continue video from 1.56.50:
+https://youtu.be/KNUchSEtQV0?si=Oiig3qYlqoSNPmPX&t=7014
+
 
 ### Scope and Limitations
 
@@ -12,6 +15,12 @@ This project integrates Solidity smart contracts with JavaScript to enable buyin
 - **Broker API Test Environment Constraints**: The Alpaca test environment has limitations, despite documentation stating full functionality. This restricts the ability to simulate a live trading environment and impacts the reliability of some workflows.
 - **Exclusion of Redemption Feature**: Due to these constraints, this project does not include a redeeming mechanism, meaning tokens cannot be converted back into stock holdings. Only minting based on stock holdings is available.
 - **Chainlink API Limitations**: Any issues or limitations with Chainlink functions may affect API call performance and data retrieval.
+
+
+### Verified Contract in Sepolia Testnet
+```
+0x06b6c7315f2d038B42d4560E4445C59B6E690EA2
+```
 
 ---
 
@@ -96,11 +105,12 @@ Output:
 secp256k1 unavailable, reverting to browser version
 Uploading encrypted secret to gateways https://01.functions-gateway.testnet.chain.link/,https://02.functions-gateway.testnet.chain.link/. slotId 0. Expiration in minutes: 1440
 
-✅ Secrets uploaded properly to gateways https://01.functions-gateway.testnet.chain.link/,https://02.functions-gateway.testnet.chain.link/! Gateways response:  { version: 1731698029, success: true }
+✅ Secrets uploaded properly to gateways https://01.functions-gateway.testnet.chain.link/,https://02.functions-gateway.testnet.chain.link/! Gateways response:  { version: 1731739451, success: true }
 
-✅ Secrets version: 1731698029
+✅ Secrets version: 1731739451
 Encrypted secrets object written to ../rwa-creator/offchain-secrets.json
 ```
+> Keep in mind the secret is only worth 24hs or 1440 minutes
 
 ### Checking the Secrets in DON are accessible:
 ```bash

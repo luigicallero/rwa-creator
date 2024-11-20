@@ -56,17 +56,21 @@ contract dTSLA is ConfirmedOwner, FunctionsClient, ERC20 {
     uint256 private s_portfolioBalance;
     mapping(bytes32 requestId => dTslaRequest) private s_requestIdToRequest;
     mapping(address users => uint256 pendingWithdrawlAmount) private s_userToWithdrawlAmount;
-
+    uint8 donHostedSecretsSlotID = 0;
+    uint64 donHostedSecretsVersion = 1732099434;
 
     /// Functions ///
-    constructor(string memory mintSourceCode, uint64 subId, string memory redeemSourceCode) 
+    constructor(uint64 subId, string memory redeemSourceCode) 
         ConfirmedOwner(msg.sender) 
         FunctionsClient(SEPOLIA_FUNCTIONS_ROUTER) 
         ERC20("dTSLA","dTSLA") 
     {
-        s_mintSourceCode = mintSourceCode;
         s_redeemSourceCode = redeemSourceCode;
         i_subId = subId;
+    }
+
+    function setMintSource(string memory mintSourceCode) external onlyOwner {
+        s_mintSourceCode = mintSourceCode;
     }
 
     /// Send an htpp request to:
@@ -77,6 +81,7 @@ contract dTSLA is ConfirmedOwner, FunctionsClient, ERC20 {
     function sendMintRequest(uint256 amount) external onlyOwner returns(bytes32){
         FunctionsRequest.Request memory req;
         req.initializeRequestForInlineJavaScript(s_mintSourceCode);
+        req.addDONHostedSecrets(donHostedSecretsSlotID, donHostedSecretsVersion);
         bytes32 requestId = _sendRequest(req.encodeCBOR(), i_subId, GAS_LIMIT, DON_ID);
         s_requestIdToRequest[requestId] = dTslaRequest(amount, msg.sender, MintOrRedeem.mint);
         return requestId;
