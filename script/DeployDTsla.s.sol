@@ -11,10 +11,11 @@ contract DeployDTsla is Script {
     
     function run() public {
         string memory mintSource = vm.readFile(alpacaMintSource);
+
         vm.startBroadcast();
-        dTSLA dTsla = new dTSLA(subID ,alpacaRedeemSource);
-        dTsla.setMintSource(mintSource);
+        dTSLA dTsla = new dTSLA(mintSource, subID ,alpacaRedeemSource);
         vm.stopBroadcast();
+
         console.log(address(dTsla));
     }
 }

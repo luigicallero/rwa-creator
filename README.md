@@ -19,7 +19,7 @@ This project integrates Solidity smart contracts with JavaScript to enable buyin
 
 ### Verified Contract in Sepolia Testnet
 ```
-0x06b6c7315f2d038B42d4560E4445C59B6E690EA2
+0xEBD4d0B170DB82b91506c5a6895D70b6a509d976
 ```
 
 ---

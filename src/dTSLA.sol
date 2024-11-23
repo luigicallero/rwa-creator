@@ -43,7 +43,7 @@ contract dTSLA is ConfirmedOwner, FunctionsClient, ERC20 {
     uint256 constant ADDITIONAL_FEED_PRECISION = 1e10;
     uint32 constant GAS_LIMIT = 300_000;
     uint256 constant COLLATERAL_RATIO = 200; // 200% collateral ratio
-    // If there is $200 of TSLA in teh brokerage, we can mint AT MOST $100 of dTSLA
+    // If there is $200 of TSLA in the brokerage, we can mint AT MOST $100 of dTSLA
     uint256 constant COLLATERAL_PRECISION = 100;
     uint256 constant MINIMUM_WITHDRAWAL_AMOUNT = 100e18;
 
@@ -54,23 +54,21 @@ contract dTSLA is ConfirmedOwner, FunctionsClient, ERC20 {
     string private s_mintSourceCode;
     string private s_redeemSourceCode;
     uint256 private s_portfolioBalance;
+    bytes32 private s_mostRecentRequestId;
     mapping(bytes32 requestId => dTslaRequest) private s_requestIdToRequest;
     mapping(address users => uint256 pendingWithdrawlAmount) private s_userToWithdrawlAmount;
     uint8 donHostedSecretsSlotID = 0;
-    uint64 donHostedSecretsVersion = 1732099434;
+    uint64 donHostedSecretsVersion = 1732329024; // TODO should not be hardcoded
 
     /// Functions ///
-    constructor(uint64 subId, string memory redeemSourceCode) 
+    constructor(string memory mintSourceCode, uint64 subId, string memory redeemSourceCode) 
         ConfirmedOwner(msg.sender) 
         FunctionsClient(SEPOLIA_FUNCTIONS_ROUTER) 
         ERC20("dTSLA","dTSLA") 
     {
+        s_mintSourceCode = mintSourceCode;
         s_redeemSourceCode = redeemSourceCode;
         i_subId = subId;
-    }
-
-    function setMintSource(string memory mintSourceCode) external onlyOwner {
-        s_mintSourceCode = mintSourceCode;
     }
 
     /// Send an htpp request to:
@@ -83,6 +81,7 @@ contract dTSLA is ConfirmedOwner, FunctionsClient, ERC20 {
         req.initializeRequestForInlineJavaScript(s_mintSourceCode);
         req.addDONHostedSecrets(donHostedSecretsSlotID, donHostedSecretsVersion);
         bytes32 requestId = _sendRequest(req.encodeCBOR(), i_subId, GAS_LIMIT, DON_ID);
+        s_mostRecentRequestId = requestId;
         s_requestIdToRequest[requestId] = dTslaRequest(amount, msg.sender, MintOrRedeem.mint);
         return requestId;
     }
@@ -127,6 +126,7 @@ contract dTSLA is ConfirmedOwner, FunctionsClient, ERC20 {
         bytes32 requestId = _sendRequest(req.encodeCBOR(), i_subId, GAS_LIMIT, DON_ID);
         s_requestIdToRequest[requestId] = dTslaRequest(amountOfTsla, msg.sender, MintOrRedeem.redeem);
 
+        s_mostRecentRequestId = requestId;
         _burn(msg.sender, amountOfTsla); // in order for user to get the USDC, the TSLA token should be burned
     }
 
@@ -153,10 +153,26 @@ contract dTSLA is ConfirmedOwner, FunctionsClient, ERC20 {
     }
 
     function fulfillRequest(bytes32 requestId, bytes memory response, bytes memory /*err*/) internal override {
-        if (s_requestIdToRequest[requestId].mintOrRedeem == MintOrRedeem.mint){
-            _mintFulfillRequest(requestId, response);
-        } else {
-            _redeemFulfillRequest(requestId, response);
+        // if (s_requestIdToRequest[requestId].mintOrRedeem == MintOrRedeem.mint){
+        //     _mintFulfillRequest(requestId, response);
+        // } else {
+        //     _redeemFulfillRequest(requestId, response);
+        // }
+
+        // Fullfill request reduced to only update a storage variable to avoid Chainlink function gas errors
+        s_portfolioBalance = uint256(bytes32(response));
+    }
+
+    function finishMint() external {
+        uint amountOfTokensToMint = s_requestIdToRequest[s_mostRecentRequestId].amountOfToken;
+
+        if(_getCollateralRationAdjustedTotalBalance(amountOfTokensToMint) > s_portfolioBalance) {
+            revert dTSLA__NotEnoughCollateral();
+        }
+
+        if(amountOfTokensToMint != 0){
+            s_requestIdToRequest[s_mostRecentRequestId].amountOfToken = 0; // security measure to avoid unauthorized mints
+            _mint(s_requestIdToRequest[s_mostRecentRequestId].requester, amountOfTokensToMint );
         }
     }
 
