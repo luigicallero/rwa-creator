@@ -4,7 +4,7 @@
 
 This project integrates Solidity smart contracts with JavaScript to enable buying and selling of stocks through a Web3 interface. It utilizes Chainlink for secure data feeds and functions feature to execute orders and Alpaca as the broker API for trading interactions.
 
-![Tesla Tokens backed up with Tesla stocks ](/assets/images/tesla_converted.jpeg)
+![Tesla Tokens backed up with Tesla stocks ](/assets/images/tesla_converted.gif)
 
 #### Scope
 - **Minting Tokens Based on Broker Holdings**: Users can mint tokens that represent the stocks held in a test broker account.
