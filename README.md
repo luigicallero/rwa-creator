@@ -1,11 +1,10 @@
 ## RWA (Real World Assets) with Chainlink and Tesla Stocks
-Continue video from 1.56.50:
-https://youtu.be/KNUchSEtQV0?si=Oiig3qYlqoSNPmPX&t=7014
-
 
 ### Scope and Limitations
 
 This project integrates Solidity smart contracts with JavaScript to enable buying and selling of stocks through a Web3 interface. It utilizes Chainlink for secure data feeds and functions feature to execute orders and Alpaca as the broker API for trading interactions.
+
+![Tesla Tokens backed up with Tesla stocks ](/assets/images/rwa_tesla.jpeg)
 
 #### Scope
 - **Minting Tokens Based on Broker Holdings**: Users can mint tokens that represent the stocks held in a test broker account.
@@ -19,7 +18,7 @@ This project integrates Solidity smart contracts with JavaScript to enable buyin
 
 ### Verified Contract in Sepolia Testnet
 ```
-0xEBD4d0B170DB82b91506c5a6895D70b6a509d976
+0x55956e6980bdf79922dc000a2c639372bf7ed5c3
 ```
 
 ---
@@ -29,16 +28,16 @@ This project integrates Solidity smart contracts with JavaScript to enable buyin
 Chainlink documentation used during this project:
 * [Chainlink Functions](https://docs.chain.link/chainlink-functions/getting-started)
 * [Chainlink Price Feeds](https://docs.chain.link/data-feeds/price-feeds/addresses?network=ethereum&page=1)
-* [Chainlink Chateau](https://chateau.voyage/)
-* [Patrick Collins tutorial](https://www.youtube.com/watch?v=KNUchSEtQV0)
+* [Patrick Collins video tutorial](https://www.youtube.com/watch?v=KNUchSEtQV0)
+* [Patrick Collins rwa github](https://github.com/PatrickAlphaC/rwa-creator)
 * [Chainlink Functions Upload Secrets - gist](https://gist.github.com/SyedAsadKazmi/215a2a88d2d65c84ae7bccf2e7c0efe5#file-upload-secrets-gist-js)
+* [Chainlink Chateau](https://chateau.voyage/)
 
 ### Packages required
 ```shell
 forge install smartcontractkit/chainlink-brownie-contracts@0.8.0 --no-commit
 forge install openzeppelin/openzeppelin-contracts --no-commit
 ```
-
 
 ### Other Requirements for [Functions](https://www.npmjs.com/package/@chainlink/functions-toolkit)
 
@@ -112,7 +111,7 @@ Encrypted secrets object written to ../rwa-creator/offchain-secrets.json
 ```
 > Keep in mind the secret is only worth 24hs or 1440 minutes
 
-### Checking the Secrets in DON are accessible:
+### Checking that the Secrets in DON are accessible:
 ```bash
 npm ./functions/uploadSecrets
 ```
@@ -141,16 +140,19 @@ See your request in the explorer https://sepolia.etherscan.io/tx/0xbc33d00be6431
 ✅ Decoded response to uint256:  11866338n
 ```
 
-## Crypto Wallet requirement on Alpaca:
-Check with forum:
-https://app.slack.com/client/TD8AD6C1J/C03RLJLDF2M
-Error received: 404 Not found
+---
 
-Awaiting response from support.
+## Crypto Wallet Restrictions on Alpaca
 
-Also review this documentations
-https://docs.alpaca.markets/docs/crypto-wallets-api#step-3-deposit-funds-to-your-alpaca-wallet
-> Only to work on production with Goerli which has been deprecated
+Alpaca’s paper (test) environment provides extensive tools for testing and simulating trading strategies. However, **crypto wallet withdrawal functionality** is restricted to the production environment.
+
+**Support Answer**:
+   For further assistance or clarification, contact Alpaca’s support team via the [official Slack channel](https://app.slack.com/client/TD8AD6C1J/C03RLJLDF2M).
+
+### Useful Links
+
+- [Alpaca Documentation](https://alpaca.markets/docs/)
+- [Alpaca Slack Support Channel](https://app.slack.com/client/TD8AD6C1J/C03RLJLDF2M)
 
 ---
 ## Troubleshooting
@@ -282,3 +284,7 @@ Error: Failed to send request to any of the DON gateway URLs:
     at async SecretsManager.uploadEncryptedSecretsToDON (.../rwa-creator/node_modules/@chainlink/functions-toolkit/dist/SecretsManager.js:155:33)
     at async uploadSecrets (.../rwa-creator/functions/uploadSecrets.js:63:30)
 ```
+
+### Solution
+
+Issue was reported on Chainlink discord and [resolved](https://discord.com/channels/592041321326182401/1080516970765623437/1306291017066221780) by support team.

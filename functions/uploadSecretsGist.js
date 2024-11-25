@@ -11,10 +11,6 @@ const { SecretsManager, createGist } = require("@chainlink/functions-toolkit");
 const ethers = require("ethers");
 
 const uploadSecrets = async () => {
-    // hardcoded for Avalanche Fuji
-    // const routerAddress = "0xA9d587a00A31A52Ed70D6026794a8FC5E2F5dCb0";
-    // const donId = "fun-avalanche-fuji-1";
-    
     // hardcoded for Sepolia
     const routerAddress = "0xb83E47C2bC239B3bf370bc41e1459A34b41238D0"
     const donId = "fun-ethereum-sepolia-1"
@@ -28,7 +24,6 @@ const uploadSecrets = async () => {
             "private key not provided - check your environment variables"
         );
 
-    // const rpcUrl = "https://api.avax-test.network/ext/bc/C/rpc";
     const rpcUrl = process.env.SEPOLIA_RPC_URL;
 
     if (!rpcUrl)
